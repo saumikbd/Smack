@@ -8,18 +8,17 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ChatVC: UIViewController {
 
+    @IBOutlet weak var menuBtn: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        menuBtn.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
+        revealViewController().tapGestureRecognizer()
+        revealViewController().panGestureRecognizer()
+        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 
 }
 

@@ -17,4 +17,7 @@ class ChannelVC: UIViewController {
         revealViewController().rearViewRevealWidth = self.view.frame.size.width - 60
     }
 
+    @IBAction func LoginTapped(_ sender: Any) {
+        performSegue(withIdentifier: TO_LOGIN, sender: self)
+    }
 }

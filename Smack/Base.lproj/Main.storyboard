@@ -260,6 +260,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AhQ-rk-kzg">
                                         <rect key="frame" x="0.0" y="49" width="250" height="15"/>
                                         <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="suX-fk-3Hu">
@@ -351,6 +352,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QzG-Gp-tyu">
                                         <rect key="frame" x="0.0" y="98" width="250" height="15"/>
                                         <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MzR-g7-p3I">
@@ -442,6 +444,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bua-6B-13A"/>
                     </view>
+                    <connections>
+                        <segue destination="C1A-Ig-ZGA" kind="unwind" identifier="unwindToChannelVC" unwindAction="prepareForSegueWithSegue:" id="g66-cV-Uvi"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Q7-xE-HrM" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="C1A-Ig-ZGA" userLabel="Exit" sceneMemberID="exit"/>

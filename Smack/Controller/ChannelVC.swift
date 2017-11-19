@@ -10,6 +10,7 @@ import UIKit
 
 class ChannelVC: UIViewController {
 
+    @IBAction func prepareForSegue(segue: UIStoryboardSegue){}
     override func viewDidLoad() {
         super.viewDidLoad()
 

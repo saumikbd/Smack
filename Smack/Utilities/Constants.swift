@@ -27,4 +27,4 @@ let LOGGED_IN_KEY = "loggedIn"
 let USER_EMAIL = "userEmail"
 
 //Headers
-let HEADER = [ "Content-Type" : "application/json; charset=UTF-08" ]
+let HEADER = [ "Content-Type" : "application/json; charset=UTF-8" ]

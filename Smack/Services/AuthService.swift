@@ -39,6 +39,8 @@ class AuthService{
         }
     }
     
+    
+    //USER REGISTER
     func registerUser(email:String, password:String, completion: @escaping CompletionHandler){
         
         let lowerCasedEmail = email.lowercased()
@@ -69,6 +71,9 @@ class AuthService{
         }
         
     }
+    
+    
+    //USER LOGIN
     func loginUser(email: String, password: String, completion: @escaping CompletionHandler){
         let lowerCasedEmail = email.lowercased()
         
@@ -98,7 +103,6 @@ class AuthService{
                 let json = JSON(data)
                 self.userEmail = json["user"].stringValue
                 self.authToken = json["token"].stringValue
-                
                 self.isLoggedIn = true
                 completion(true)
             }
@@ -107,5 +111,43 @@ class AuthService{
                 completion(false)
             }
         }
+    }
+    
+    //CREATE USER
+    func createUser(name:String, email:String, avatarName:String, avatarColor:String, completion: @escaping CompletionHandler){
+        let lowerCasedEmail = email.lowercased()
+        let body = [
+            "name": name,
+            "email": lowerCasedEmail,
+            "avatarName": avatarName,
+            "avatarColor" : avatarColor
+        ]
+        let header = [
+            "Authorization" : "Bearer \(AuthService.instance.authToken)",
+            "Content-Type" : "application/json; charset=UTF-8"
+        ]
+        
+        Alamofire.request(URL_ADDUSER, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+            if response.result.error == nil {
+                guard let data = response.data else {return}
+                let json = JSON(data)
+                let id = json["_id"].stringValue
+                let name = json["name"].stringValue
+                let email = json["email"].stringValue
+                let avatarName = json["avatarName"].stringValue
+                let avatarColor = json["avatarColor"].stringValue
+                
+                UserDataService.instance.setUserInfo(id: id, name: name, email: email, avatarName: avatarName, avatarColor: avatarColor)
+                
+                completion(true)
+                
+            }
+            else{
+                debugPrint(response.result.error as Any)
+                completion(false)
+            }
+        }
+        
+        
     }
 }

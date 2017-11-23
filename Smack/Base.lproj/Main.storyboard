@@ -452,6 +452,7 @@
                     <connections>
                         <outlet property="emailTxt" destination="6aV-Yg-XRQ" id="rcH-y4-2By"/>
                         <outlet property="passwordTxt" destination="QzG-Gp-tyu" id="0h2-Rn-XvF"/>
+                        <outlet property="userNameTxt" destination="uCJ-iG-sXy" id="eTC-Mu-I97"/>
                         <segue destination="C1A-Ig-ZGA" kind="unwind" identifier="unwindToChannelVC" unwindAction="prepareForSegueWithSegue:" id="g66-cV-Uvi"/>
                     </connections>
                 </viewController>

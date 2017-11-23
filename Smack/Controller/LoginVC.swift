@@ -26,5 +26,7 @@ class LoginVC: UIViewController {
     @IBAction func createAccoutTapped(_ sender: Any) {
         performSegue(withIdentifier: TO_CREATE_ACCOUNT, sender: nil)
     }
+    @IBAction func loginTapped(_ sender: Any) {
+    }
     
 }

@@ -24,4 +24,7 @@ class UserDataService{
         self.avatarName = avatarName
         self.avatarColor = avatarColor
     }
+    func setAvatarName(avatarName: String){
+        self.avatarName = avatarName
+    }
 }

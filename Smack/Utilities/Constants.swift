@@ -21,6 +21,7 @@ let URL_ADDUSER = "\(BASE_URL)user/add"
 let TO_LOGIN = "toLogin"
 let TO_CREATE_ACCOUNT = "toCreateAccount"
 let UNWIND = "unwindToChannelVC"
+let AVATAR_PICKER = "avaterPicker"
 
 //User Defaults
 let TOKEN_KEY = "token"
@@ -29,3 +30,5 @@ let USER_EMAIL = "userEmail"
 
 //Headers
 let HEADER = [ "Content-Type" : "application/json; charset=UTF-8" ]
+
+

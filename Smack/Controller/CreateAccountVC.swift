@@ -101,7 +101,6 @@ class CreateAccountVC: UIViewController {
         UIView.animate(withDuration: 0.2) {
                 self.profileImage.backgroundColor = self.bgColor
         }
-        UserDataService.instance.setAvatarColor(avatarColor: avatarColor)
         print(avatarColor)
     }
     

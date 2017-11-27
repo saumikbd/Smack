@@ -19,17 +19,29 @@ class ChannelVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         revealViewController().rearViewRevealWidth = self.view.frame.size.width - 60
-        NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
         
     }
-    @objc func userDataDidChange(){
-            //print("Things Will be done")
-        loginButon.setTitle(UserDataService.instance.name, for: UIControlState.normal)
-        userImage.image = UIImage(named: UserDataService.instance.avatarName)
-        userImage.backgroundColor = UserDataService.instance.getAvatarColor(components: UserDataService.instance.avatarColor)
+    @objc func userDataDidChange(_ notif: Notification){
+        if AuthService.instance.isLoggedIn {
+            loginButon.setTitle(UserDataService.instance.name, for: UIControlState.normal)
+            userImage.image = UIImage(named: UserDataService.instance.avatarName)
+            userImage.backgroundColor = UserDataService.instance.getAvatarColor(components: UserDataService.instance.avatarColor)
+        }else{
+            loginButon.setTitle("Login", for: .normal)
+            userImage.image = UIImage(named: "menuProfileIcon")
+            userImage.backgroundColor = UIColor.clear
+        }
     }
     
     @IBAction func LoginTapped(_ sender: Any) {
-        performSegue(withIdentifier: TO_LOGIN, sender: self)
+        if AuthService.instance.isLoggedIn {
+            let profileVC = ProfileVC()
+            profileVC.modalPresentationStyle = .custom
+            present(profileVC, animated: true, completion: nil)
+        }
+        else {
+            performSegue(withIdentifier: TO_LOGIN, sender: self)
+        }
     }
 }

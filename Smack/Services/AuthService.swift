@@ -150,4 +150,12 @@ class AuthService{
         
         
     }
+    
+    //LOGOUT USER
+    func logoutUser() {
+        self.authToken = ""
+        self.isLoggedIn = false
+        self.userEmail = ""
+        UserDataService.instance.setUserInfo(id: "", name: "", email: "", avatarName: "", avatarColor: "")
+    }
 }

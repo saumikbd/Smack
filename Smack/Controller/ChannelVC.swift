@@ -22,7 +22,13 @@ class ChannelVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
         
     }
+    override func viewDidAppear(_ animated: Bool) {
+        setupUserInfo()
+    }
     @objc func userDataDidChange(_ notif: Notification){
+        setupUserInfo()
+    }
+    func setupUserInfo(){
         if AuthService.instance.isLoggedIn {
             loginButon.setTitle(UserDataService.instance.name, for: UIControlState.normal)
             userImage.image = UIImage(named: UserDataService.instance.avatarName)

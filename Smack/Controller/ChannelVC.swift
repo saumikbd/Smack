@@ -68,5 +68,11 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return UITableViewCell()
     }
     
+    @IBAction func addChannelTapped(_ sender: Any) {
+        let addChannelVC = AddChannelVC()
+        addChannelVC.modalPresentationStyle = .custom
+        present(addChannelVC, animated: true, completion: nil)
+    }
+    
     
 }

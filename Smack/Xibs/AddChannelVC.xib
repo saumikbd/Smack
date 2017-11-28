@@ -20,7 +20,6 @@
                 <outlet property="backgroundView" destination="8ib-Px-M9y" id="Nzw-hy-1on"/>
                 <outlet property="channelDescription" destination="GSG-nd-gTp" id="fQ8-VQ-CzY"/>
                 <outlet property="channelName" destination="qGP-0Y-f9C" id="zCZ-MB-J4J"/>
-                <outlet property="createChannelTapped" destination="d8r-uf-pAO" id="eWS-qj-hLU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -51,6 +50,9 @@
                                     <real key="value" value="5"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="createChannelTapped:" destination="-1" eventType="touchUpInside" id="hp9-PV-eU4"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0v-Sd-5nh">
                             <rect key="frame" x="297" y="10" width="28" height="28"/>

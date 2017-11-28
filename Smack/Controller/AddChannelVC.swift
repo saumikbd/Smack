@@ -36,7 +36,17 @@ class AddChannelVC: UIViewController {
     @IBAction func closeButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    @IBOutlet weak var createChannelTapped: RoundedButton!
+    
+    @IBAction func createChannelTapped(_ sender: Any) {
+        guard let name = channelName.text, channelName.text != "" else {return}
+        guard let description = channelDescription.text else {return}
+        SocketService.instance.addChannel(channelName: name, channelDescription: description) { (success) in
+            if success {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
+    }
     
 
 }

@@ -44,14 +44,20 @@ class LoginVC: UIViewController {
             if success {
                 AuthService.instance.findUserByEmail(completion: { (success) in
                     if success {
-                        NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
-                        self.spinner.isHidden = true
-                        self.spinner.stopAnimating()
-                        self.dismiss(animated: true, completion: nil)
+                        MessageService.instance.findAllChannels { (success) in
+                            if success {
+                                NotificationCenter.default.post(name: NOTIF_CHANNELS_DATA_CHANGED, object: nil)
+                                NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+                                self.spinner.isHidden = true
+                                self.spinner.stopAnimating()
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        }
                     }
                 })
             }
         }
+        
     }
     
 }

@@ -18,8 +18,11 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.channelTable.rowHeight = 30
         revealViewController().rearViewRevealWidth = self.view.frame.size.width - 60
         NotificationCenter.default.addObserver(self, selector: #selector(userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(channelDataDidChange(_:)), name: NOTIF_CHANNELS_DATA_CHANGED, object: nil)
+        
         channelTable.delegate = self
         channelTable.dataSource = self
         SocketService.instance.getChannel { (success) in
@@ -27,11 +30,23 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 self.channelTable.reloadData()
             }
         }
+        if AuthService.instance.isLoggedIn {
+            MessageService.instance.findAllChannels(completion: { (success) in
+                if success {
+                    self.channelTable.reloadData()
+                }
+            })
+        }
         
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         setupUserInfo()
     }
+    @objc func channelDataDidChange(_ notif: Notification){
+        channelTable.reloadData()
+    }
+    
     @objc func userDataDidChange(_ notif: Notification){
         setupUserInfo()
     }
@@ -72,11 +87,20 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         return UITableViewCell()
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let channel = MessageService.instance.channels[indexPath.row]
+        MessageService.instance.selectedChannel = channel
+        NotificationCenter.default.post(name: NOTIF_CHANNEL_SELECTED, object: nil)
+        print("Channel #\(channel.name) Selected")
+    }
+    
     
     @IBAction func addChannelTapped(_ sender: Any) {
-        let addChannelVC = AddChannelVC()
-        addChannelVC.modalPresentationStyle = .custom
-        present(addChannelVC, animated: true, completion: nil)
+        if AuthService.instance.isLoggedIn{
+            let addChannelVC = AddChannelVC()
+            addChannelVC.modalPresentationStyle = .custom
+            present(addChannelVC, animated: true, completion: nil)
+        }
     }
     
     

@@ -85,6 +85,7 @@
                     </view>
                     <connections>
                         <outlet property="menuBtn" destination="IJp-2D-hDJ" id="VEW-Nx-LOJ"/>
+                        <outlet property="titleLabel" destination="s2G-xv-z4R" id="N53-97-PdF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sdb-l9-t6x" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -156,7 +157,7 @@
                                 </prototypes>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXx-0N-D7I">
-                                <rect key="frame" x="150" y="578" width="50" height="38"/>
+                                <rect key="frame" x="135" y="578" width="50" height="38"/>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="19"/>
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -174,7 +175,7 @@
                             <constraint firstItem="e3k-vN-HpE" firstAttribute="top" secondItem="tYW-m9-9eR" secondAttribute="bottom" constant="10" id="EwQ-QD-CZq"/>
                             <constraint firstItem="Ru1-e9-Yke" firstAttribute="bottom" secondItem="zsg-eO-u8r" secondAttribute="bottom" constant="20" id="G7C-hq-lnR"/>
                             <constraint firstItem="woO-Ht-anE" firstAttribute="leading" secondItem="Ru1-e9-Yke" secondAttribute="leading" constant="20" id="Hc8-bP-5H6"/>
-                            <constraint firstItem="DXx-0N-D7I" firstAttribute="leading" secondItem="zsg-eO-u8r" secondAttribute="trailing" constant="30" id="Ish-se-U3T"/>
+                            <constraint firstItem="DXx-0N-D7I" firstAttribute="leading" secondItem="zsg-eO-u8r" secondAttribute="trailing" constant="15" id="Ish-se-U3T"/>
                             <constraint firstItem="zsg-eO-u8r" firstAttribute="centerY" secondItem="DXx-0N-D7I" secondAttribute="centerY" id="NF8-dE-DyR"/>
                             <constraint firstItem="zsg-eO-u8r" firstAttribute="top" secondItem="e3k-vN-HpE" secondAttribute="bottom" constant="10" id="UOy-Qf-19Z"/>
                             <constraint firstItem="e3k-vN-HpE" firstAttribute="trailing" secondItem="Ru1-e9-Yke" secondAttribute="trailing" id="bWi-sh-tqA"/>
@@ -232,11 +233,6 @@
                                         <state key="normal" title="Login">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="radius">
-                                                <real key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="loginTapped:" destination="XRZ-oN-yVc" eventType="touchUpInside" id="kcS-dZ-Xoi"/>
                                         </connections>
@@ -411,11 +407,6 @@
                                 <state key="normal" title="Create Account">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="radius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="createAccountTapped:" destination="cDS-Fs-Xcu" eventType="touchUpInside" id="8Qd-VU-PfC"/>
                                 </connections>

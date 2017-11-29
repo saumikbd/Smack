@@ -16,7 +16,7 @@ let BASE_URL = "https://ssmack.herokuapp.com/v1/"
 let URL_REGISTER = BASE_URL+"account/register"
 let URL_LOGIN = "\(BASE_URL)account/login"
 let URL_ADDUSER = "\(BASE_URL)user/add"
-let URL_USER_BY_EMAIL = "\(BASE_URL)/user/byEmail/"
+let URL_USER_BY_EMAIL = "\(BASE_URL)user/byEmail/"
 let URL_GET_ALL_CHANNELS = "\(BASE_URL)channel"
 
 //Segues
@@ -42,5 +42,7 @@ let smackPurplePlaceholder = #colorLiteral(red: 0.3266413212, green: 0.421520113
 
 //Notifications
 let NOTIF_USER_DATA_DID_CHANGE = Notification.Name("notifUserDataChanged")
+let NOTIF_CHANNELS_DATA_CHANGED = Notification.Name("notifChannelsDataChanged")
+let NOTIF_CHANNEL_SELECTED = Notification.Name("notifChannelSelected")
 
 

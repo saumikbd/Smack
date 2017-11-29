@@ -11,12 +11,14 @@ import UIKit
 class ChatVC: UIViewController {
 
     @IBOutlet weak var menuBtn: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         menuBtn.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
         revealViewController().tapGestureRecognizer()
         revealViewController().panGestureRecognizer()
+        NotificationCenter.default.addObserver(self, selector: #selector(selectedChannel(_:)), name: NOTIF_CHANNEL_SELECTED, object: nil)
         
         if AuthService.instance.isLoggedIn {
             AuthService.instance.findUserByEmail(completion: { (success) in
@@ -26,13 +28,12 @@ class ChatVC: UIViewController {
             })
             
         }
-        MessageService.instance.findAllChannels(completion: { (success) in
-            if(success){
-                print("\n\nchannels printed\n")
-            }
-        })
         
-        
+    }
+    @objc func selectedChannel(_ notif : Notification){
+        guard let channel = MessageService.instance.selectedChannel else{return}
+        titleLabel.text = "#\(channel.name)"
+        revealViewController().revealToggle(animated: true)
     }
 
 }

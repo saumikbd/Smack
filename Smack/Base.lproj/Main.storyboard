@@ -78,11 +78,11 @@
                                 <rect key="frame" x="0.0" y="77" width="375" height="510"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatCell" rowHeight="80" id="Qxr-O1-Vje" customClass="ChatCell" customModule="Smack" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="80"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatCell" id="Qxr-O1-Vje" customClass="ChatCell" customModule="Smack" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qxr-O1-Vje" id="WVJ-xJ-nWT">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZeG-zj-q0C" customClass="CircleImage" customModule="Smack" customModuleProvider="target">
@@ -93,7 +93,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="message" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqJ-aL-WVd">
-                                                    <rect key="frame" x="82" y="31.5" width="285" height="48"/>
+                                                    <rect key="frame" x="82" y="31.5" width="285" height="20.5"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -134,7 +134,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hMt-fO-S0d">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write a Message ..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hMt-fO-S0d">
                                 <rect key="frame" x="0.0" y="627" width="375" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.05190496575342466" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -142,7 +142,10 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
+                                <connections>
+                                    <action selector="userTyping:" destination="QgR-0W-N23" eventType="editingChanged" id="3XG-W3-yIp"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Pt-g3-ejl">
                                 <rect key="frame" x="337" y="632" width="30" height="30"/>
@@ -173,6 +176,7 @@
                         <outlet property="chatTable" destination="sDJ-Dc-Cki" id="xbI-sP-aRH"/>
                         <outlet property="menuBtn" destination="IJp-2D-hDJ" id="VEW-Nx-LOJ"/>
                         <outlet property="messageTxt" destination="hMt-fO-S0d" id="naK-CB-KrB"/>
+                        <outlet property="sendButton" destination="2Pt-g3-ejl" id="8XM-y2-ace"/>
                         <outlet property="titleLabel" destination="s2G-xv-z4R" id="N53-97-PdF"/>
                     </connections>
                 </viewController>

@@ -14,16 +14,19 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageTxt: UITextField!
     @IBOutlet weak var chatTable: UITableView!
+    @IBOutlet weak var sendButton: UIButton!
+    
+    var isTyping:Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        sendButton.isHidden = true
         view.bindToKeyboard()
         chatTable.dataSource = self
         chatTable.delegate = self
         
-        //chatTable.rowHeight = 140
-        chatTable.estimatedRowHeight = 140
+        //chatTable.estimatedRowHeight = 140
         chatTable.rowHeight = UITableViewAutomaticDimension
         
         menuBtn.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
@@ -45,6 +48,16 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             })
             
         }
+        
+        SocketService.instance.getMessages { (success) in
+            if success {
+                self.chatTable.reloadData()
+                let indexPath = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
+                self.chatTable.scrollToRow(at: indexPath, at: .bottom, animated: false)
+            }
+        }
+        
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tap)
         
@@ -58,6 +71,20 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         updateView()
         revealViewController().revealToggle(animated: true)
     }
+    
+    
+    @IBAction func userTyping(_ sender: Any) {
+        if messageTxt.text == "" {
+            isTyping = false
+            sendButton.isHidden = true
+        }
+        else {
+            isTyping = true
+            sendButton.isHidden = false
+        }
+    }
+    
+    
     func updateView(){
         guard let channel = MessageService.instance.selectedChannel else{return}
         titleLabel.text = "#\(channel.name)"
@@ -74,9 +101,11 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             guard let message = messageTxt.text , messageTxt.text != "" else {return}
             print(message)
-            SocketService.instance.addmessage(messageBody: message, completion: { (success) in
+            SocketService.instance.addMessage(messageBody: message, completion: { (success) in
                 if success {
                     self.messageTxt.text = ""
+                    self.isTyping = false
+                    self.sendButton.isHidden = true
                     print("message added")
                 }
             })

@@ -35,14 +35,14 @@ class SocketService: NSObject {
         socket.on("channelCreated") { (data, ack) in
             guard let name = data[0] as? String else {return}
             guard let description = data[1] as? String else {return}
-            guard let id = data[1] as? String else {return}
+            guard let id = data[2] as? String else {return}
             let newChannel = Channel(id: id, name: name, description: description)
             MessageService.instance.channels.append(newChannel)
             completion(true)
         }
     }
     
-    func addmessage(messageBody: String, completion: @escaping CompletionHandler){
+    func addMessage(messageBody: String, completion: @escaping CompletionHandler){
         let messageBody = messageBody
         let userId = UserDataService.instance.id
         guard let channelId = MessageService.instance.selectedChannel?.id else {return}
@@ -51,6 +51,26 @@ class SocketService: NSObject {
         let userAvatarColor = UserDataService.instance.avatarColor
         socket.emit("newMessage", messageBody, userId, channelId, userName, userAvatar, userAvatarColor)
         completion(true)
+    }
+    func getMessages(completion: @escaping CompletionHandler){
+        socket.on("messageCreated") { (data, ack) in
+            guard let messageBody = data[0] as? String else{return}
+            guard let userId = data[1] as? String else{return}
+            guard let channelId = data[2] as? String else{return}
+            guard let userName = data[3] as? String else{return}
+            guard let userAvatar = data[4] as? String else{return}
+            guard let userAvatarColor = data[5] as? String else{return}
+            guard let id = data[6] as? String else{return}
+            guard let timeStamp = data[7] as? String else{return}
+            
+            let message = Message(messageBody: messageBody, userId: userId, channelId: channelId, userName: userName, userAvatar: userAvatar, userAvatarColor: userAvatarColor, id: id, timeStamp: timeStamp)
+            if MessageService.instance.selectedChannel?.id == channelId {
+                MessageService.instance.messages.append(message)
+            }
+            
+            completion(true)
+            
+        }
     }
     
     

@@ -171,5 +171,6 @@ class AuthService{
         self.userEmail = ""
         UserDataService.instance.setUserInfo(id: "", name: "", email: "", avatarName: "", avatarColor: "")
         MessageService.instance.clearChannel()
+        MessageService.instance.clearMessages()
     }
 }

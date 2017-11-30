@@ -30,14 +30,6 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 self.channelTable.reloadData()
             }
         }
-        if AuthService.instance.isLoggedIn {
-            MessageService.instance.findAllChannels(completion: { (success) in
-                if success {
-                    self.channelTable.reloadData()
-                }
-            })
-        }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {

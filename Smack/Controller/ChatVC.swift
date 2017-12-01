@@ -15,6 +15,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var messageTxt: UITextField!
     @IBOutlet weak var chatTable: UITableView!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var usersTypingLabel: UILabel!
     
     var isTyping:Bool?
     
@@ -52,12 +53,38 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         SocketService.instance.getMessages { (success) in
             if success {
                 self.chatTable.reloadData()
-                let indexPath = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
-                self.chatTable.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                if MessageService.instance.messages.count > 0 {
+                    let indexPath = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
+                    self.chatTable.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                }
             }
         }
         
         
+        SocketService.instance.userTypingUpdate { (typingUsers) in
+            guard let channelId = MessageService.instance.selectedChannel?.id else {return}
+            var numberOfUsers = 0
+            var verb = ""
+            var names = ""
+            for (typingUser,channel) in typingUsers {
+                if channel == channelId {
+                    if names == "" {
+                        names = typingUser
+                        verb = "is"
+                    } else {
+                        names = "\(names), \(typingUser)"
+                        verb = "are"
+                    }
+                    numberOfUsers += 1
+                }
+            }
+            if numberOfUsers > 0 {
+                self.usersTypingLabel.text = "\(names) \(verb) typing ..."
+            } else {
+                self.usersTypingLabel.text = "No one is typing"
+            }
+            
+        }
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tap)
         
@@ -77,10 +104,13 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if messageTxt.text == "" {
             isTyping = false
             sendButton.isHidden = true
+            SocketService.instance.socket.emit("stopType", UserDataService.instance.name)
         }
         else {
             isTyping = true
             sendButton.isHidden = false
+            guard let channelId = MessageService.instance.selectedChannel?.id else{return}
+            SocketService.instance.socket.emit("startType", UserDataService.instance.name, channelId)
         }
     }
     
@@ -92,6 +122,10 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if success {
                 print("Success fetching messages");
                 self.chatTable.reloadData()
+                if MessageService.instance.messages.count>0{
+                    let indexPath = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
+                    self.chatTable.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                }
             }
         }
     }
@@ -106,6 +140,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.messageTxt.text = ""
                     self.isTyping = false
                     self.sendButton.isHidden = true
+                    SocketService.instance.socket.emit("stopType", UserDataService.instance.name)
                     print("message added")
                 }
             })
@@ -119,7 +154,6 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else {
             titleLabel.text = "No Channels Yet!"
         }
-        self.reloadInputViews()
     }
     
     

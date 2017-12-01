@@ -66,8 +66,10 @@ class SocketService: NSObject {
             let message = Message(messageBody: messageBody, userId: userId, channelId: channelId, userName: userName, userAvatar: userAvatar, userAvatarColor: userAvatarColor, id: id, timeStamp: timeStamp)
             if MessageService.instance.selectedChannel?.id == channelId {
                 MessageService.instance.messages.append(message)
+            } else {
+                MessageService.instance.unreadChannels.append(message.channelId)
+                
             }
-            
             completion(true)
             
         }

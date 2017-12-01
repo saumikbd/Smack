@@ -10,11 +10,18 @@ import UIKit
 
 class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    //SEGUES
+    
     @IBAction func prepareForSegue(segue: UIStoryboardSegue){}
+    
+    //IBOUTLETS
     
     @IBOutlet weak var userImage: CircleImage!
     @IBOutlet weak var loginButon: UIButton!
     @IBOutlet weak var channelTable: UITableView!
+    
+    
+    //VIEW CYCLE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,11 +37,18 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 self.channelTable.reloadData()
             }
         }
+        SocketService.instance.getMessages { (success) in
+            self.channelTable.reloadData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         setupUserInfo()
     }
+    
+    
+    //NOTIFICATION ACTIONS
+    
     @objc func channelDataDidChange(_ notif: Notification){
         channelTable.reloadData()
     }
@@ -42,6 +56,9 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @objc func userDataDidChange(_ notif: Notification){
         setupUserInfo()
     }
+    
+    
+    //SETTING UP VIEW
     func setupUserInfo(){
         if AuthService.instance.isLoggedIn {
             loginButon.setTitle(UserDataService.instance.name, for: UIControlState.normal)
@@ -54,6 +71,9 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    
+    //IBACTIONS
+    
     @IBAction func LoginTapped(_ sender: Any) {
         if AuthService.instance.isLoggedIn {
             let profileVC = ProfileVC()
@@ -64,6 +84,18 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             performSegue(withIdentifier: TO_LOGIN, sender: self)
         }
     }
+    
+    @IBAction func addChannelTapped(_ sender: Any) {
+        if AuthService.instance.isLoggedIn{
+            let addChannelVC = AddChannelVC()
+            addChannelVC.modalPresentationStyle = .custom
+            present(addChannelVC, animated: true, completion: nil)
+        }
+    }
+    
+    
+    //TABLE ELEMENTS
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -74,8 +106,8 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "channelCell", for: indexPath) as? ChannelCell {
-                cell.setupView(channel: MessageService.instance.channels[indexPath.row])
-                return cell
+            cell.setupView(channel: MessageService.instance.channels[indexPath.row])
+            return cell
         }
         return UITableViewCell()
     }
@@ -84,16 +116,9 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         MessageService.instance.selectedChannel = channel
         NotificationCenter.default.post(name: NOTIF_CHANNEL_SELECTED, object: nil)
         print("Channel #\(channel.name) Selected")
+        MessageService.instance.unreadChannels = MessageService.instance.unreadChannels.filter{ $0 != channel.id }
+        tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
     }
-    
-    
-    @IBAction func addChannelTapped(_ sender: Any) {
-        if AuthService.instance.isLoggedIn{
-            let addChannelVC = AddChannelVC()
-            addChannelVC.modalPresentationStyle = .custom
-            present(addChannelVC, animated: true, completion: nil)
-        }
-    }
-    
     
 }

@@ -32,7 +32,7 @@ class ChatCell: UITableViewCell {
         let endIndex = isoTime.index(isoTime.endIndex, offsetBy: -5)
         //isoTime = isoTime.substring(to: endIndex)
         isoTime = String(isoTime[..<endIndex])
-        print("\n\n\n \(isoTime) \n\n\n")
+        //print("\n\n\n \(isoTime) \n\n\n")
         let isoFormatter = ISO8601DateFormatter()
         let chatDate = isoFormatter.date(from: isoTime.appending("Z"))
         let formatter = DateFormatter()

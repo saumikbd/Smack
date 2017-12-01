@@ -17,7 +17,12 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tap)
     }
+    
+    
+    //SETTING UP VIEW
     
     func setupView(){
         passwordTxt.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedStringKey.foregroundColor: smackPurplePlaceholder])
@@ -25,6 +30,14 @@ class LoginVC: UIViewController {
         spinner.isHidden = true
     }
     
+    //GESTURE RECOGNIZERS
+    
+    @objc func handleTap(_ recognizer: UIGestureRecognizer){
+        view.endEditing(true)
+    }
+    
+    
+    //IBACTIONS
     
     @IBAction func closeButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -57,7 +70,6 @@ class LoginVC: UIViewController {
                 })
             }
         }
-        
     }
     
 }

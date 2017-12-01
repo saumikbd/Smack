@@ -25,19 +25,6 @@ class CreateAccountVC: UIViewController {
         setupView()
     }
     
-    func setupView(){
-        userNameTxt.attributedPlaceholder = NSAttributedString(string: "username", attributes: [.foregroundColor : smackPurplePlaceholder])
-        passwordTxt.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedStringKey.foregroundColor: smackPurplePlaceholder])
-        emailTxt.attributedPlaceholder = NSAttributedString(string: "email", attributes: [NSAttributedStringKey.foregroundColor: smackPurplePlaceholder])
-        spinner.isHidden = true
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tap)
-        
-    }
-    @objc func handleTap(){
-        view.endEditing(true)
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         if UserDataService.instance.avatarName != "" {
@@ -48,6 +35,32 @@ class CreateAccountVC: UIViewController {
             }
         }
     }
+    
+    
+    //SETTING UP VIEW ELEMENTS
+    
+    func setupView(){
+        userNameTxt.attributedPlaceholder = NSAttributedString(string: "username", attributes: [.foregroundColor : smackPurplePlaceholder])
+        passwordTxt.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedStringKey.foregroundColor: smackPurplePlaceholder])
+        emailTxt.attributedPlaceholder = NSAttributedString(string: "email", attributes: [NSAttributedStringKey.foregroundColor: smackPurplePlaceholder])
+        spinner.isHidden = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tap)
+        
+    }
+    
+    
+    //GESTURE RECOGNIZER METHODS
+    
+    @objc func handleTap(){
+        view.endEditing(true)
+    }
+    
+    
+    
+    //IBACTIONS
+
     @IBAction func closeButtonTapped(_ sender: Any) {
         performSegue(withIdentifier: UNWIND, sender: nil)
     }
@@ -77,11 +90,23 @@ class CreateAccountVC: UIViewController {
                         print("User Logged in!\n Authtoken: ", AuthService.instance.authToken)
                         AuthService.instance.createUser(name: username, email: email, avatarName: self.avatarName, avatarColor: self.avatarColor, completion: { (success) in
                             if success {
-                                self.spinner.isHidden = true
+                                MessageService.instance.findAllChannels { (success) in
+                                    if success {
+                                        NotificationCenter.default.post(name: NOTIF_CHANNELS_DATA_CHANGED, object: nil)
+                                        NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+                                        self.spinner.isHidden = true
+                                        self.spinner.stopAnimating()
+                                        print("User Added Successfully!")
+                                        self.performSegue(withIdentifier: UNWIND, sender: nil)
+                                    }
+                                }
+                                
+                                
+                               /* self.spinner.isHidden = true
                                 self.spinner.stopAnimating()
                                 print("User Added Successfully!")
                                 NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
-                                self.performSegue(withIdentifier: UNWIND, sender: nil)
+                                self.performSegue(withIdentifier: UNWIND, sender: nil)*/
                             }
                         })
                         

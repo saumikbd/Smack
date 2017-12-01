@@ -172,5 +172,6 @@ class AuthService{
         UserDataService.instance.setUserInfo(id: "", name: "", email: "", avatarName: "", avatarColor: "")
         MessageService.instance.clearChannel()
         MessageService.instance.clearMessages()
+        NotificationCenter.default.post(name: NOTIF_CHANNELS_DATA_CHANGED, object: nil)
     }
 }

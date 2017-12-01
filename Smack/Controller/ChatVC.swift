@@ -26,7 +26,6 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         view.bindToKeyboard()
         chatTable.dataSource = self
         chatTable.delegate = self
-        
         //chatTable.estimatedRowHeight = 140
         chatTable.rowHeight = UITableViewAutomaticDimension
         
@@ -34,6 +33,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         revealViewController().tapGestureRecognizer()
         revealViewController().panGestureRecognizer()
         NotificationCenter.default.addObserver(self, selector: #selector(selectedChannel(_:)), name: NOTIF_CHANNEL_SELECTED, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(channelDataChanged(_:)), name: NOTIF_CHANNELS_DATA_CHANGED, object: nil)
         
         if AuthService.instance.isLoggedIn {
             AuthService.instance.findUserByEmail(completion: { (success) in
@@ -87,33 +87,9 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tap)
-        
-    }
-    @objc func handleTap(){
-        view.endEditing(true)
     }
     
-    @objc func selectedChannel(_ notif : Notification){
-        chatTable.reloadData()
-        updateView()
-        revealViewController().revealToggle(animated: true)
-    }
-    
-    
-    @IBAction func userTyping(_ sender: Any) {
-        if messageTxt.text == "" {
-            isTyping = false
-            sendButton.isHidden = true
-            SocketService.instance.socket.emit("stopType", UserDataService.instance.name)
-        }
-        else {
-            isTyping = true
-            sendButton.isHidden = false
-            guard let channelId = MessageService.instance.selectedChannel?.id else{return}
-            SocketService.instance.socket.emit("startType", UserDataService.instance.name, channelId)
-        }
-    }
-    
+    //SETTING UP VIEW
     
     func updateView(){
         guard let channel = MessageService.instance.selectedChannel else{return}
@@ -127,6 +103,59 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.chatTable.scrollToRow(at: indexPath, at: .bottom, animated: false)
                 }
             }
+        }
+    }
+    
+    
+    //GESTURES
+    @objc func handleTap(){
+        view.endEditing(true)
+    }
+    
+    
+    //NOTIFICATION ACTIONS
+    
+    @objc func channelDataChanged(_ notif: Notification){
+        self.onLoginMessages()
+        chatTable.reloadData()
+    }
+    
+    @objc func selectedChannel(_ notif : Notification){
+        chatTable.reloadData()
+        updateView()
+        revealViewController().revealToggle(animated: true)
+    }
+    
+    
+    
+    
+    //DATA SETUP
+    
+    
+    func onLoginMessages(){
+        if MessageService.instance.channels.count > 0 {
+            MessageService.instance.selectedChannel = MessageService.instance.channels[0]
+            updateView()
+        } else {
+            titleLabel.text = "No Channels Yet!"
+        }
+    }
+    
+    
+    
+    //IBACTIONS
+    
+    @IBAction func userTyping(_ sender: Any) {
+        if messageTxt.text == "" {
+            isTyping = false
+            sendButton.isHidden = true
+            SocketService.instance.socket.emit("stopType", UserDataService.instance.name)
+        }
+        else {
+            isTyping = true
+            sendButton.isHidden = false
+            guard let channelId = MessageService.instance.selectedChannel?.id else{return}
+            SocketService.instance.socket.emit("startType", UserDataService.instance.name, channelId)
         }
     }
     
@@ -147,15 +176,8 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func onLoginMessages(){
-        if MessageService.instance.channels.count > 0 {
-            MessageService.instance.selectedChannel = MessageService.instance.channels[0]
-            updateView()
-        } else {
-            titleLabel.text = "No Channels Yet!"
-        }
-    }
     
+    //TABLE VIEW ELEMENTS
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

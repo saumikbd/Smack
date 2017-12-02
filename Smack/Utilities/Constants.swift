@@ -19,7 +19,7 @@ let URL_ADDUSER = "\(BASE_URL)user/add"
 let URL_USER_BY_EMAIL = "\(BASE_URL)user/byEmail/"
 let URL_GET_ALL_CHANNELS = "\(BASE_URL)channel"
 let URL_GET_MESSAGES = "\(BASE_URL)message/byChannel/"
-
+let URL_UPDATE_USER_NAME = "\(BASE_URL)user/"
 //Segues
 let TO_LOGIN = "toLogin"
 let TO_CREATE_ACCOUNT = "toCreateAccount"
@@ -36,6 +36,11 @@ let HEADER = [ "Content-Type" : "application/json; charset=UTF-8" ]
 let BEARER_HEADER = [
     "Authorization" : "Bearer \(AuthService.instance.authToken)",
     "Content-Type" : "application/json; charset=UTF-8"
+]
+let USER_HEADER = [
+    "Authorization" : "Bearer \(AuthService.instance.authToken)",
+    "Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
+
 ]
 
 //Colors

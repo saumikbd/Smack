@@ -164,6 +164,20 @@ class AuthService{
         UserDataService.instance.setUserInfo(id: id, name: name, email: email, avatarName: avatarName, avatarColor: avatarColor)
     }
     
+    func updateUserName(name: String, completion: @escaping CompletionHandler){
+        let body = ["name": name ]
+        print("\(URL_UPDATE_USER_NAME)\(UserDataService.instance.id)")
+        Alamofire.request("\(URL_UPDATE_USER_NAME)\(UserDataService.instance.id)", method: .put, parameters: body, encoding: JSONEncoding.default, headers: USER_HEADER).responseJSON { (response) in
+            if response.result.error == nil {
+                print("Succesful")
+                completion(true)
+            }else {
+                debugPrint(response.result.error as Any)
+                completion(false)
+            }
+        }
+    }
+    
     //LOGOUT USER
     func logoutUser() {
         self.authToken = ""
